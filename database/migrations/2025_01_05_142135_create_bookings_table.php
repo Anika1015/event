@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -10,9 +9,14 @@ class CreateBookingsTable extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
+            $table->engine = 'InnoDB'; // Ensure InnoDB is used for foreign keys
             $table->id('BookingID'); // Primary key
+
+            // Foreign key columns
             $table->unsignedBigInteger('EventID'); // Foreign key to events
-            $table->unsignedBigInteger('UserID'); // Foreign key to users
+            $table->unsignedBigInteger('UserID');  // Foreign key to users
+
+            // Additional columns
             $table->date('BookingDate');
             $table->enum('Status', ['Pending', 'Confirmed', 'Cancelled']);
             $table->timestamps();
@@ -21,18 +25,18 @@ class CreateBookingsTable extends Migration
             $table->foreign('EventID')
                   ->references('id')
                   ->on('events')
-                  ->onDelete('cascade');
+                  ->onDelete('cascade'); // Cascade delete on related event deletion
 
             $table->foreign('UserID')
-                  ->references('UserID') // Explicit reference to UserID
+                  ->references('id') // Reference 'id' column in 'users'
                   ->on('users')
-                  ->onDelete('cascade');
+                  ->onDelete('cascade'); // Cascade delete on related user deletion
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('bookings'); // Drops the table during rollback
     }
+}
 
-};
