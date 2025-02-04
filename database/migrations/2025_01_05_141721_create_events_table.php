@@ -8,12 +8,16 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id(); // This creates an unsignedBigInteger primary key column
-            $table->string('EventName');
-            $table->text('Description')->nullable();
+            $table->id();
+            $table->string('title');
+            $table->double('price');
+            $table->date('date');
+            $table->string('location');
+            $table->text('description');
             $table->timestamps();
         });
     }
+    
 
     public function down()
     {

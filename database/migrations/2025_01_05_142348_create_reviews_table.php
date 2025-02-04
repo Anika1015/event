@@ -7,32 +7,32 @@ use Illuminate\Support\Facades\Schema;
 class CreateReviewsTable extends Migration
 {
     public function up()
-    {
+{
+    if (!Schema::hasTable('reviews')) {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id('ReviewID');
-            $table->unsignedBigInteger('UserID'); // Explicitly use unsignedBigInteger
-            $table->unsignedBigInteger('EventID'); // Explicitly use unsignedBigInteger
-            $table->integer('Rating')->checkBetween(1, 5); // Rating between 1 and 5
+            $table->unsignedBigInteger('UserID');
+            $table->unsignedBigInteger('EventID');
+            $table->integer('Rating');
             $table->text('Comment')->nullable();
             $table->timestamps();
 
             // Foreign key constraints
             $table->foreign('UserID')
-                  ->references('UserID') // Reference UserID from users table
+                  ->references('UserID')
                   ->on('users')
                   ->onDelete('cascade');
             
-            // Foreign key constraints for EventID referencing the `id` from the events table
             $table->foreign('EventID')
-                  ->references('id') // Reference `id` from events table
+                  ->references('id')
                   ->on('events')
                   ->onDelete('cascade');
         });
+        
+        // Add check constraint for Rating
+        DB::statement('ALTER TABLE reviews ADD CONSTRAINT check_rating CHECK (Rating BETWEEN 1 AND 5)');
     }
+}
 
-    public function down()
-    {
-        Schema::dropIfExists('reviews');
-    }
 
 };

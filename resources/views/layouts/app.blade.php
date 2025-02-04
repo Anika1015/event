@@ -34,7 +34,7 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                @yield('content')  <!-- This is where the content will be injected -->
             </main>
         </div>
 
@@ -43,3 +43,4 @@
         @livewireScripts
     </body>
 </html>
+

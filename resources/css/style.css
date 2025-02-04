@@ -1,0 +1,95 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Header Section */
+.page-header {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.page-header h2 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* Events Section */
+.events-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.event-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.event-title {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.event-card p {
+    font-size: 1em;
+    margin: 5px 0;
+    color: #7f8c8d;
+}
+
+/* Button Style */
+.btn-get-tickets {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #2980b9;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-get-tickets:hover {
+    background-color: #3498db;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .events-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .events-container {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header h2 {
+        font-size: 2em;
+    }
+}

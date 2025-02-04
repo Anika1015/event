@@ -10,15 +10,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('BookingID');
-            $table->string('PaymentMethod');
-            $table->decimal('Amount', 10, 2);
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('transaction_id')->unique();
+            $table->decimal('amount', 10, 2);
+            $table->string('currency');
+            $table->string('status'); // successful, failed, pending
+            $table->string('payment_method');
             $table->timestamps();
-
-            $table->foreign('BookingID')
-                  ->references('BookingID')
-                  ->on('bookings')
-                  ->onDelete('cascade');
         });
     }
 

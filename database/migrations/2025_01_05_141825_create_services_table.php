@@ -10,7 +10,8 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id('ServiceID');
             $table->string('Name', 100);
-            $table->text('Description')->nullable();
+            $table->text('Description');
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }
