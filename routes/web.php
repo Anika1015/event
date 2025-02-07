@@ -6,6 +6,15 @@ use App\Http\Controllers\EventController;
 
 use App\Http\Controllers\PaymentController;
 
+
+
+Route::get('/events/manage', [EventController::class, 'manage'])->name('events.manage');
+Route::post('/events/store', [EventController::class, 'store'])->name('events.store');
+Route::post('/events/update/{id}', [EventController::class, 'update'])->name('events.update');
+Route::post('/events/delete/{id}', [EventController::class, 'destroy'])->name('events.delete');
+
+//Route::resource('events', EventController::class);
+
 //Route::get('/events', [EventController::class, 'index'])->name('events.index');
 //Route::get('/event/{id}/pay', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
 //Route::post('/event/{id}/pay', [PaymentController::class, 'processPayment'])->name('payment.process');
@@ -32,7 +41,7 @@ Route::get('/payment/success', function () {
 
 
 
-
+/*
 // Admin Login Route
 Route::get('/admin/login', function () {
     return view('admin.login');
@@ -52,7 +61,7 @@ Route::middleware(['isAdmin'])->group(function () {
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
-
+*/
 
 
 

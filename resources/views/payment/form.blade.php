@@ -4,8 +4,8 @@
 
 @section('content')
     <div class="payment-form">
-        <h2>Payment for {{ $event->title }}</h2>
-        <p><strong>Price:</strong> ${{ number_format($event->price, 2) }}</p>
+        <h2>Booking for {{ $event->title }}</h2>
+        <p><strong>Price:</strong> {{ number_format($event->price, 2) }} taka</p>
 
         <form action="{{ route('payment.process', $event->id) }}" method="POST" id="payment-form">
             @csrf

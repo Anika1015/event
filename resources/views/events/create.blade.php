@@ -1,18 +1,18 @@
 @extends('layout.master')
 
-@section('title', 'Event Details')
+@section('title', 'Create Events')
 
 @section('content')
-    <div class="event-details">
-        <h1>{{ $event->title }}</h1>
-        <p><strong>Date:</strong> {{ $event->date }}</p>
-        <p><strong>Location:</strong> {{ $event->location }}</p>
-        <p><strong>Description:</strong> {{ $event->description }}</p>
-        <p><strong>Price:</strong> {{ number_format($event->price, 2) }} taka</p>
-
-        <a href="{{ route('payment.form', $event->id) }}" class="btn btn-primary">book</a>
-    </div>
-
+    <h1>Create Event</h1>
+    <form action="{{ route('events.store') }}" method="POST">
+        @csrf
+        <input type="text" name="title" placeholder="Event Title" required>
+        <input type="number" step="0.01" name="price" placeholder="Price" required>
+        <input type="date" name="date" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <button type="submit">Create</button>
+    </form>
     <style>
         .event-details {
             max-width: 600px;
