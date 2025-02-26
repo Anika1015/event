@@ -33,8 +33,6 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required',
             'price' => 'required|numeric',
-            'date' => 'required|date',
-            'location' => 'required',
             'description' => 'required',
         ]);
 
@@ -55,8 +53,6 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required',
             'price' => 'required|numeric',
-            'date' => 'required|date',
-            'location' => 'required',
             'description' => 'required',
         ]);
 
@@ -66,7 +62,7 @@ class EventController extends Controller
     }
 
     // Delete an event
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         $event = Event::findOrFail($id);
         $event->delete();

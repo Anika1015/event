@@ -9,34 +9,26 @@ class CreateBookingsTable extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->engine = 'InnoDB'; // Ensure InnoDB is used for foreign keys
-            $table->id('BookingID'); // Primary key
-
-            // Foreign key columns
-            $table->unsignedBigInteger('EventID'); // Foreign key to events
-            $table->unsignedBigInteger('UserID');  // Foreign key to users
-
-            // Additional columns
-            $table->date('BookingDate');
-            $table->enum('Status', ['Pending', 'Confirmed', 'Cancelled']);
+            $table->id('BookingID');
+            $table->foreignId('EventID')->constrained('events')->onDelete('cascade'); // Laravel will assume 'id'
+            $table->foreignId('UserID')->constrained('users')->onDelete('cascade');
+            $table->string('event_name');
+            $table->date('event_date');
+            $table->string('location');
+            $table->enum('time_slot', ['afternoon', 'night']);
+            $table->integer('number_of_guests');
+            $table->text('description')->nullable();
+            $table->string('status')->default('pending');
+            $table->string('admin_decision')->default('pending');
             $table->timestamps();
-
-            // Foreign key constraints
-            $table->foreign('EventID')
-                  ->references('id')
-                  ->on('events')
-                  ->onDelete('cascade'); // Cascade delete on related event deletion
-
-            $table->foreign('UserID')
-                  ->references('id') // Reference 'id' column in 'users'
-                  ->on('users')
-                  ->onDelete('cascade'); // Cascade delete on related user deletion
         });
+        
     }
 
     public function down()
     {
-        Schema::dropIfExists('bookings'); // Drops the table during rollback
+        Schema::dropIfExists('bookings');
     }
 }
+
 

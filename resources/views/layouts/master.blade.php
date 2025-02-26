@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Ensure the footer sticks to the bottom if content is short */
         html, body {
             height: 100%;
-        }
-        body {
             display: flex;
             flex-direction: column;
         }
@@ -21,41 +16,23 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Event Planner</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('welcome') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('events.manage') }}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('services') }}">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('events.manage') }}">Manage Events</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            More
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Blog</a></li>
-                            <li><a class="dropdown-item" href="#">Portfolio</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Contact</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+    <nav class="bg-white shadow-lg py-4">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <h1 class="text-2xl font-bold text-gray-800">Event Planner</h1>
+            <ul class="flex space-x-6">
+                <li><a href="{{ route('welcome') }}" class="text-gray-800 hover:text-gray-500">Home</a></li>
+                <li><a href="{{ route('events.manage') }}" class="text-gray-800 hover:text-gray-500">About</a></li>
+                <li><a href="{{ route('services') }}" class="text-gray-800 hover:text-gray-500">Services</a></li>
+                <li><a href="{{ route('events.manage') }}" class="text-gray-800 hover:text-gray-500">Manage Events</a></li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </nav>
 
@@ -67,11 +44,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-light text-center py-3">
-        <p>© 2025 Your Company. All rights reserved.</p>
+    <footer class="bg-gray-900 text-white text-center py-6">
+        <p>&copy; 2025 Event Planner. All rights reserved.</p>
     </footer>
-
-    <!-- Include Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

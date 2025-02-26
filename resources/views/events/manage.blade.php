@@ -1,99 +1,101 @@
-@extends('layout.master')
-@section('title')
-    Events Management
-@endsection
+@extends('layout.adminMaster')
+
+@section('title', 'Events Management')
 
 @section('content')
-<div class="mt-10"></div>
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h4>Manage Events</h4>
+    <div class="max-w-4xl mx-auto mt-10 bg-white shadow-xl rounded-lg overflow-hidden">
+        <!-- Header Section -->
+        <div class="bg-gray-800 text-white py-6 px-8">
+            <h1 class="text-3xl font-bold">Manage Events</h1>
         </div>
-        <div class="card-body">
+
+        <!-- Create Event Form -->
+        <div class="p-8">
             <form action="{{ route('events.store') }}" method="POST">
                 @csrf
-                <div class="mb-3">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" required/>
+                <div class="mb-6">
+                    <label for="title" class="text-lg font-semibold text-gray-700">Title</label>
+                    <input type="text" name="title" class="form-control mt-2 p-3 w-full border rounded-lg" required/>
                     @error('title')
-                        <span class="text-danger">{{ $message }}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <label for="price">Price</label>
-                    <input type="number" step="0.01" name="price" class="form-control" required/>
+
+                <div class="mb-6">
+                    <label for="price" class="text-lg font-semibold text-gray-700">Price</label>
+                    <input type="number" step="0.01" name="price" class="form-control mt-2 p-3 w-full border rounded-lg" required/>
                     @error('price')
-                        <span class="text-danger">{{ $message }}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <label for="date">Date</label>
-                    <input type="date" name="date" class="form-control" required/>
-                    @error('date')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="location">Location</label>
-                    <input type="text" name="location" class="form-control" required/>
-                    @error('location')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="description">Description</label>
-                    <textarea name="description" class="form-control" rows="3" required></textarea>
+
+                
+
+                <div class="mb-6">
+                    <label for="description" class="text-lg font-semibold text-gray-700">Description</label>
+                    <textarea name="description" class="form-control mt-2 p-3 w-full border rounded-lg" rows="3" required></textarea>
                     @error('description')
-                        <span class="text-danger">{{ $message }}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Save Event</button>
+
+                <div class="mb-6 flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">Save Event</button>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="col-md-12 mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h4>All Events</h4>
+    <!-- All Events List Section -->
+    <div class="max-w-4xl mx-auto mt-8 bg-white shadow-xl rounded-lg overflow-hidden">
+        <div class="bg-gray-800 text-white py-6 px-8">
+            <h4 class="text-2xl font-bold">All Events</h4>
         </div>
-        <div class="card-body">
-            <ul class="list-group">
+        <div class="p-8">
+            <ul class="space-y-6">
                 @foreach($events as $event)
-                    <li class="list-group-item">
+                    <li class="bg-gray-50 p-6 rounded-lg shadow-lg">
+                        <!-- Update Form -->
                         <form action="{{ route('events.update', $event->id) }}" method="POST">
                             @csrf
-                            <div class="mb-3">
-                                <input type="text" name="title" class="form-control" value="{{ $event->title }}" required/>
+                            <div class="mb-4">
+                                <label for="title" class="text-lg font-semibold text-gray-700">Title</label>
+                                <input type="text" name="title" class="form-control mt-2 p-3 w-full border rounded-lg" value="{{ $event->title }}" required/>
                             </div>
-                            <div class="mb-3">
-                                <input type="number" step="0.01" name="price" class="form-control" value="{{ $event->price }}" required/>
+
+                            <div class="mb-4">
+                                <label for="price" class="text-lg font-semibold text-gray-700">Price</label>
+                                <input type="number" step="0.01" name="price" class="form-control mt-2 p-3 w-full border rounded-lg" value="{{ $event->price }}" required/>
                             </div>
-                            <div class="mb-3">
-                                <input type="date" name="date" class="form-control" value="{{ $event->date }}" required/>
+
+                            
+
+                            <div class="mb-4">
+                                <label for="description" class="text-lg font-semibold text-gray-700">Description</label>
+                                <textarea name="description" class="form-control mt-2 p-3 w-full border rounded-lg" rows="3" required>{{ $event->description }}</textarea>
                             </div>
-                            <div class="mb-3">
-                                <input type="text" name="location" class="form-control" value="{{ $event->location }}" required/>
-                            </div>
-                            <div class="mb-3">
-                                <textarea name="description" class="form-control" rows="3" required>{{ $event->description }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-success">Update</button>
-                            </div>
+
+                            <div class="flex justify-start space-x-4 mb-6">
+                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">Update</button>
+                            
                         </form>
-                        <form action="{{ route('events.delete', $event->id) }}" method="POST" class="d-inline">
+
+                        <!-- Delete Form (Separate from Update) -->
+                        <form action="{{ route('events.delete', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?')">
                             @csrf
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            <input type="hidden" name="_method" value="POST">
+                           
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">
+                                    Delete
+                                </button>
+                            </div>
                         </form>
+
                     </li>
                 @endforeach
             </ul>
         </div>
     </div>
-</div>
 @endsection
+
+

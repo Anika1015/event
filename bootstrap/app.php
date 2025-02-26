@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -51,5 +54,11 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+
+$app->afterBootstrapping(Illuminate\Foundation\Bootstrap\BootProviders::class, function ($app) {
+    $router = $app->make(Illuminate\Routing\Router::class);
+
+    $router->aliasMiddleware('admin', App\Http\Middleware\CheckAdminMiddleware::class);
+});
 
 return $app;

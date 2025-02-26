@@ -3,36 +3,19 @@
 @section('title', 'Event Details')
 
 @section('content')
-    <div class="event-details">
-        <h1>{{ $event->title }}</h1>
-        <p><strong>Date:</strong> {{ $event->date }}</p>
-        <p><strong>Location:</strong> {{ $event->location }}</p>
-        <p><strong>Description:</strong> {{ $event->description }}</p>
-        <p><strong>Price:</strong> {{ number_format($event->price, 2) }} taka</p>
+    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-10">
+        <div class="bg-gray-800 text-white py-6 px-8">
+            <h1 class="text-3xl font-bold">{{ $event->title }}</h1>
+            
+        </div>
+        <div class="p-8">
+            <p class="text-lg text-gray-700"><strong>Description:</strong> {{ $event->description }}</p>
+            <p class="text-lg text-gray-700 mt-4"><strong>Price:</strong> <span class="text-green-600 font-semibold">{{ number_format($event->price, 2) }} Taka</span></p>
 
-        <a href="{{ route('payment.form', $event->id) }}" class="btn btn-primary">book</a>
+            <div class="mt-6 flex justify-center">
+            <a href="{{ route('booking.create', ['event_id' => $event->id]) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all">Book Now</a>
+            </div>
+        </div>
     </div>
-
-    <style>
-        .event-details {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background: #fff;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
 @endsection
+

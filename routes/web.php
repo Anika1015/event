@@ -6,21 +6,92 @@ use App\Http\Controllers\EventController;
 
 use App\Http\Controllers\PaymentController;
 
+use App\Http\Controllers\AdminController;
+
+use App\Http\Controllers\ContactController;
+
+use App\Http\Controllers\EventRequestController;
+
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\AdminBookingController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/book/{event_id?}', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/book/{event_id}', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/admin', [AdminBookingController::class, 'index'])->name('admin.index');
+    Route::post('/admin/bookings/{id}/accept', [AdminBookingController::class, 'accept'])->name('admin.booking.accept');
+    Route::post('/admin/bookings/{id}/reject', [AdminBookingController::class, 'reject'])->name('admin.booking.reject');
 
 
-Route::get('/events/manage', [EventController::class, 'manage'])->name('events.manage');
-Route::post('/events/store', [EventController::class, 'store'])->name('events.store');
-Route::post('/events/update/{id}', [EventController::class, 'update'])->name('events.update');
-Route::post('/events/delete/{id}', [EventController::class, 'destroy'])->name('events.delete');
 
-//Route::resource('events', EventController::class);
+});
 
-//Route::get('/events', [EventController::class, 'index'])->name('events.index');
-//Route::get('/event/{id}/pay', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
-//Route::post('/event/{id}/pay', [PaymentController::class, 'processPayment'])->name('payment.process');
-//Route::get('/payment/success', function () {
-//    return view('payment.success');
-//})->name('payment.success');
+Route::get('/status', [BookingController::class, 'status'])->name('status');
+
+
+
+
+
+
+
+
+// Routes in web.php
+
+Route::get('/events/request', [EventRequestController::class, 'create'])->name('events.request.create');
+Route::post('/events/request', [EventRequestController::class, 'store'])->name('events.request.store');
+
+// Routes for admin approval
+Route::get('/admin/requests', [AdminController::class, 'eventRequests'])->name('admin.requests');
+Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
+Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
+
+
+
+Route::get('/messages', [ContactController::class, 'showUserMessages'])->name('messages')->middleware('auth');
+
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/payments', [PaymentController::class, 'index'])->name('admin.payments.index');
+    Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('admin.payments.show');
+});
+
+
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'usercheck'])->name('admin.dashboard');
+    Route::post('/admin/contact/update/{id}', [AdminController::class, 'updateContactStatus'])->name('admin.contact.update');
+});
+
+
+
+
+
+Route::get('/events/manage', [EventController::class, 'manage'])
+    ->name('events.manage')
+    ->middleware(['auth', 'admin']);
+
+Route::post('/events/store', [EventController::class, 'store'])
+    ->name('events.store')
+    ->middleware(['auth', 'admin']);
+
+Route::post('/events/update/{id}', [EventController::class, 'update'])
+    ->name('events.update')
+    ->middleware(['auth', 'admin']);
+
+    
+Route::post('/events/delete/{id}', [EventController::class, 'destroy'])
+    ->name('events.delete');
+    
+
+
+
+
 
 // Home Route - Show all events
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
@@ -40,52 +111,22 @@ Route::get('/payment/success', function () {
 })->name('payment.success');
 
 
-
-/*
-// Admin Login Route
-Route::get('/admin/login', function () {
-    return view('admin.login');
-})->name('admin.login');
-
-// Admin Routes with IsAdmin Middleware
-Route::middleware(['isAdmin'])->group(function () {
-    // Admin Dashboard
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-    // Admin Settings
-    Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
-    
-});
-
-// Admin Logout Route
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
-
-*/
-
-
-
-
-
-//Route::get('/events', [EventController::class, 'index']);
-
-
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+
 Route::get('/home', function () {
-    return view('home');
+   return view('home');
 });
-
-//Route::get('/services', function () {
-//    return view('services');
-//})->name('services');
-
-
-
-Route::get('/services', [ServiceController::class, 'index'])->name('services');
-
 
 
 Route::middleware([
@@ -97,3 +138,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Auth::routes();
+
+

@@ -73,23 +73,3 @@ a {
     transition: background-color 0.3s ease;
 }
 
-.btn-get-tickets:hover {
-    background-color: #3498db;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .events-container {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .events-container {
-        grid-template-columns: 1fr;
-    }
-
-    .page-header h2 {
-        font-size: 2em;
-    }
-}
