@@ -9,7 +9,7 @@ class EventRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['event_title','event_description', 'event_date','location', 'status', 'user_id'];
+    protected $fillable = ['event_title','event_description', 'event_date', 'status', 'user_id'];
 
     public function payment()
     {

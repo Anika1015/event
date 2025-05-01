@@ -1,14 +1,23 @@
 @extends('Layout.master')
 
+
+
 @section('title', 'Dashboard Page')
 
 @section('content')
 
-@if(session('message'))
-    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6 rounded-md shadow-md">
-        {{ session('message') }}
+@if(session('error'))
+    <div class="bg-red-100 text-red-800 p-4 border-l-4 border-red-500 mb-4">
+        {{ session('error') }}
     </div>
 @endif
+
+@if(session('success'))
+    <div class="bg-green-100 text-green-800 p-4 border-l-4 border-green-500 mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
 
 <!-- Hero Section -->
 <section class="relative bg-cover bg-center h-screen flex items-center justify-center" 

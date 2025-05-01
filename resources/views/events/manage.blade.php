@@ -1,101 +1,84 @@
 @extends('layout.adminMaster')
 
-@section('title', 'Events Management')
-
 @section('content')
-    <div class="max-w-4xl mx-auto mt-10 bg-white shadow-xl rounded-lg overflow-hidden">
-        <!-- Header Section -->
-        <div class="bg-gray-800 text-white py-6 px-8">
-            <h1 class="text-3xl font-bold">Manage Events</h1>
-        </div>
+<div class="max-w-7xl mx-auto my-10 px-6">
+    <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8">Manage Events</h2>
 
-        <!-- Create Event Form -->
-        <div class="p-8">
-            <form action="{{ route('events.store') }}" method="POST">
-                @csrf
-                <div class="mb-6">
-                    <label for="title" class="text-lg font-semibold text-gray-700">Title</label>
-                    <input type="text" name="title" class="form-control mt-2 p-3 w-full border rounded-lg" required/>
-                    @error('title')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-6">
-                    <label for="price" class="text-lg font-semibold text-gray-700">Price</label>
-                    <input type="number" step="0.01" name="price" class="form-control mt-2 p-3 w-full border rounded-lg" required/>
-                    @error('price')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                
-
-                <div class="mb-6">
-                    <label for="description" class="text-lg font-semibold text-gray-700">Description</label>
-                    <textarea name="description" class="form-control mt-2 p-3 w-full border rounded-lg" rows="3" required></textarea>
-                    @error('description')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-6 flex justify-end">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">Save Event</button>
-                </div>
-            </form>
-        </div>
+    <!-- Create New Event Button -->
+    <div class="mb-6 text-right">
+        <a href="{{ route('events.create') }}" class="bg-gradient-to-r from-blue-700 to-teal-500 text-white px-6 py-3 rounded-full text-lg hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+            Create New Event
+        </a>
     </div>
 
-    <!-- All Events List Section -->
-    <div class="max-w-4xl mx-auto mt-8 bg-white shadow-xl rounded-lg overflow-hidden">
-        <div class="bg-gray-800 text-white py-6 px-8">
-            <h4 class="text-2xl font-bold">All Events</h4>
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-8 shadow-md">
+            <p class="font-medium">{{ session('success') }}</p>
         </div>
-        <div class="p-8">
-            <ul class="space-y-6">
+    @endif
+
+    <!-- Events Table -->
+    <div class="overflow-hidden bg-white shadow-lg rounded-xl">
+        <table class="min-w-full table-auto border-collapse text-gray-700">
+            <thead class="bg-blue-800 text-white">
+                <tr>
+                    <th class="py-4 px-6 text-left text-lg font-semibold border-b border-gray-200">Event Title</th>
+                    <th class="py-4 px-6 text-left text-lg font-semibold border-b border-gray-200">Description</th>
+                    <th class="py-4 px-6 text-left text-lg font-semibold border-b border-gray-200">Venues</th>
+                    <th class="py-4 px-6 text-left text-lg font-semibold border-b border-gray-200">Dish Packages</th>
+                    <th class="py-4 px-6 text-left text-lg font-semibold border-b border-gray-200">Lighting Themes</th>
+                    <th class="py-4 px-6 text-center text-lg font-semibold border-b border-gray-200">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
                 @foreach($events as $event)
-                    <li class="bg-gray-50 p-6 rounded-lg shadow-lg">
-                        <!-- Update Form -->
-                        <form action="{{ route('events.update', $event->id) }}" method="POST">
-                            @csrf
-                            <div class="mb-4">
-                                <label for="title" class="text-lg font-semibold text-gray-700">Title</label>
-                                <input type="text" name="title" class="form-control mt-2 p-3 w-full border rounded-lg" value="{{ $event->title }}" required/>
-                            </div>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 px-6 border-t border-gray-200">{{ $event->title }}</td>
+                        <td class="py-4 px-6 border-t border-gray-200">{{ $event->description }}</td>
+                        <td class="py-4 px-6 border-t border-gray-200 space-y-1">
+                            @foreach($event->venues as $venue)
+                                <div class="text-sm">{{ $venue->name }} - ${{ number_format($venue->price, 2) }}</div>
+                            @endforeach
+                        </td>
+                        <td class="py-4 px-6 border-t border-gray-200 space-y-1">
+                            @foreach($event->dishPackages as $dish)
+                                <div class="text-sm">{{ $dish->name }} - ${{ number_format($dish->price_per_guest, 2) }}</div>
+                            @endforeach
+                        </td>
+                        <td class="py-4 px-6 border-t border-gray-200 space-y-1">
+                            @foreach($event->lightingThemes as $lighting)
+                                <div class="text-sm">{{ $lighting->name }} - ${{ number_format($lighting->price, 2) }}</div>
+                            @endforeach
+                        </td>
+                        <td class="py-4 px-6 border-t border-gray-200 text-center flex space-x-2">
+                            <!-- Edit Button -->
+                            <a href="{{ route('events.edit', $event->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200">
+                                Edit
+                            </a>
 
-                            <div class="mb-4">
-                                <label for="price" class="text-lg font-semibold text-gray-700">Price</label>
-                                <input type="number" step="0.01" name="price" class="form-control mt-2 p-3 w-full border rounded-lg" value="{{ $event->price }}" required/>
-                            </div>
-
-                            
-
-                            <div class="mb-4">
-                                <label for="description" class="text-lg font-semibold text-gray-700">Description</label>
-                                <textarea name="description" class="form-control mt-2 p-3 w-full border rounded-lg" rows="3" required>{{ $event->description }}</textarea>
-                            </div>
-
-                            <div class="flex justify-start space-x-4 mb-6">
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">Update</button>
-                            
-                        </form>
-
-                        <!-- Delete Form (Separate from Update) -->
-                        <form action="{{ route('events.delete', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?')">
-                            @csrf
-                            <input type="hidden" name="_method" value="POST">
-                           
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-lg shadow-md transition-all">
+                            <!-- Delete Button -->
+                            <form action="{{ route('events.destroy', $event->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-200" onclick="return confirm('Are you sure you want to delete this event?')">
                                     Delete
                                 </button>
-                            </div>
-                        </form>
-
-                    </li>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
-            </ul>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 @endsection
+
+
+
+
+
+
+
 
 

@@ -9,7 +9,7 @@ class ContactController extends Controller
 {
     public function submit(Request $request)
     {
-        // Validate form data
+        
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
@@ -17,7 +17,7 @@ class ContactController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Save data to database
+       
         Contact::create([
             'Name' => $request->name,
             'Email' => $request->email,

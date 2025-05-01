@@ -50,9 +50,9 @@
         @if(isset($booking))
             <div class="message">
                 @if($booking->status === 'accepted')
-                    <div class="accepted">Your booking has been <strong>accepted</strong>. Please proceed with payment.
+                    <div class="accepted">Your booking has been <strong>accepted</strong>.Pay within 24 hours. Please proceed with payment.
                     <br>
-                    <a href="{{ route('payment.form', ['id' => $booking->EventID]) }}" class="btn">Proceed to Payment</a>
+                    <a href="{{ route('stripe.index', ['booking_id' => $booking->BookingID]) }}" class="btn">Proceed to Payment</a>
                     </div>
                     @elseif($booking->status === 'rejected')
                     <div class="rejected">Sorry, your booking request was <strong>rejected</strong>.</div>

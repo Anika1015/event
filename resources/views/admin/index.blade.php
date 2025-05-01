@@ -1,69 +1,81 @@
 @extends('layout.adminMaster')
 
 @section('content')
-<div class="container my-5">
-    <h2 class="mb-4" style="font-size: 32px;">Booking Requests</h2>
+<div class="container mx-auto my-8 px-6">
+    <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Booking Requests</h2>
 
-    <!-- Display Success or Error Messages -->
+    <!-- Success & Error Messages -->
     @if(session('success'))
-        <div class="alert alert-success mb-4" style="font-size: 18px;">{{ session('success') }}</div>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
+            {{ session('success') }}
+        </div>
     @endif
     @if(session('error'))
-        <div class="alert alert-danger mb-4" style="font-size: 18px;">{{ session('error') }}</div>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+            {{ session('error') }}
+        </div>
     @endif
 
     <!-- Booking Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" style="font-size: 18px; table-layout: fixed;">
-            <thead class="thead-dark">
+    <div class="bg-white shadow-lg rounded-lg">
+        <table class="w-full border-collapse border border-gray-200">
+            <thead class="bg-gray-800 text-white">
                 <tr>
-                    <th style="width: 10%;">User</th>
-                    <th style="width: 15%;">Event</th>
-                    <th style="width: 12%;">Event Date</th>
-                    <th style="width: 12%;">Location</th>
-                    <th style="width: 12%;">Time Slot</th>
-                    <th style="width: 10%;">Number of Guests</th>
-                    <th style="width: 18%;">Description</th>
-                    <th style="width: 10%;">Status</th>
-                    <th style="width: 15%;">Action</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">User</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">Event</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">Event Date</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">Location</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">Time Slot</th>
+                    <th class="py-3 px-6 border border-gray-300 text-left">Guests</th>
+                    <th class="py-3 px-6 border border-gray-300 text-center">Status</th>
+                    <th class="py-3 px-6 border border-gray-300 text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($bookings as $booking)
-                    <tr>
-                        <td>{{ $booking->user->name }}</td>
-                        <td>{{ $booking->event->title }}</td>   
-                        <td>{{ $booking->event_date }}</td>
-                        <td>{{ $booking->location }}</td>
-                        <td>{{ $booking->time_slot }}</td>
-                        <td>{{ $booking->number_of_guests }}</td>
-                        <td>{{ $booking->description }}</td>
+                    <tr class="border-b hover:bg-gray-100">
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->user->name }}</td>
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->event->title }}</td>
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->event_date }}</td>
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->location }}</td>
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->time_slot }}</td>
+                        <td class="py-4 px-6 border border-gray-300">{{ $booking->number_of_guests }}</td>
                         
-                        <!-- Display Booking Status -->
-                        <td class="text-center">
+                        <!-- Booking Status -->
+                        <td class="py-4 px-6 border border-gray-300 text-center">
                             @if($booking->status == 'pending')
-                                <span class="badge badge-warning" style="font-size: 18px; padding: 8px 15px;">Pending</span>
+                                <span class="bg-yellow-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Pending</span>
                             @elseif($booking->status == 'accepted')
-                                <span class="badge badge-success" style="font-size: 18px; padding: 8px 15px;">Accepted</span>
+                                <span class="bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Accepted</span>
+                            @elseif($booking->status == 'confirmed')
+                                <span class="bg-green-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Confirmed</span>
+                            @elseif($booking->status == 'paid')
+                                <span class="bg-green-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Paid</span>    
                             @else
-                                <span class="badge badge-danger" style="font-size: 18px; padding: 8px 15px;">Rejected</span>
+                                <span class="bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-lg">Rejected</span>
                             @endif
                         </td>
 
-                        <!-- Display Action Buttons if the booking is pending -->
-                        <td class="text-center d-flex justify-content-between" style="gap: 20px;">
+                        <!-- Action Buttons -->
+                        <td class="py-4 px-6 border border-gray-300 text-center">
                             @if($booking->status == 'pending')
-                                <form action="{{ route('admin.booking.accept', ['id' => $booking->BookingID]) }}" method="POST" class="mr-2">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-lg">Accept</button>
-                                </form>
+                                <div class="flex justify-center space-x-2">
+                                    <form action="{{ route('admin.booking.accept', ['id' => $booking->BookingID]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                            <i class="fas fa-check-circle"></i> Accept
+                                        </button>
+                                    </form>
 
-                                <form action="{{ route('admin.booking.reject', ['id' => $booking->BookingID]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger btn-lg">Reject</button>
-                                </form>
+                                    <form action="{{ route('admin.booking.reject', ['id' => $booking->BookingID]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400">
+                                            <i class="fas fa-times-circle"></i> Reject
+                                        </button>
+                                    </form>
+                                </div>
                             @else
-                                <span class="text-muted" style="font-size: 18px;">No action available</span>
+                                <span class="text-gray-500 text-sm">No action available</span>
                             @endif
                         </td>
                     </tr>
@@ -73,5 +85,6 @@
     </div>
 </div>
 @endsection
+
 
 

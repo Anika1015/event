@@ -14,10 +14,10 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        // Fetch all services from the database
+        
         $services = Service::all();
         
-        // Return the view with the services data
+        
         return view('services.index', compact('services'));
     }
 
@@ -39,19 +39,19 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data
+       
         $request->validate([
             'Name' => 'required|string|max:100',
             'Description' => 'nullable|string',
         ]);
 
-        // Create a new service and save it to the database
+        
         Service::create([
             'Name' => $request->input('Name'),
             'Description' => $request->input('Description'),
         ]);
 
-        // Redirect back to the services index with a success message
+        
         return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
@@ -63,7 +63,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        // Find the service by its ID
+       
         $service = Service::findOrFail($id);
         
         return view('services.edit', compact('service'));
@@ -78,22 +78,22 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the incoming request data
+        
         $request->validate([
             'Name' => 'required|string|max:100',
             'Description' => 'nullable|string',
         ]);
 
-        // Find the service by its ID
+       
         $service = Service::findOrFail($id);
         
-        // Update the service with the validated data
+       
         $service->update([
             'Name' => $request->input('Name'),
             'Description' => $request->input('Description'),
         ]);
 
-        // Redirect back to the services index with a success message
+       
         return redirect()->route('services.index')->with('success', 'Service updated successfully.');
     }
 
@@ -105,11 +105,10 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        // Find the service by its ID and delete it
+        
         $service = Service::findOrFail($id);
         $service->delete();
 
-        // Redirect back to the services index with a success message
         return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
 }

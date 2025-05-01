@@ -44,7 +44,7 @@
                     @if($booking->admin_decision == 'pending')
                         <span class="badge badge-warning">Pending</span>
                     @elseif($booking->admin_decision == 'approved')
-                        <span class="badge badge-success">Approved</span>
+                        <span class="badge badge-success">Approved</span>    
                     @elseif($booking->admin_decision == 'rejected')
                         <span class="badge badge-danger">Rejected</span>
                     @endif

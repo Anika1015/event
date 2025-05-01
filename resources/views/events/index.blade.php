@@ -1,5 +1,8 @@
 @extends('layout.master')
 
+
+
+
 @section('title', 'Upcoming Events')
 
 @section('content')
@@ -33,4 +36,6 @@
         @endforeach
     </section>
 @endsection
+
+
 

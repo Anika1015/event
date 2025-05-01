@@ -9,10 +9,16 @@ use App\Models\Event;
 class AdminBookingController extends Controller
 {
     public function index()
-    {
-        $bookings = Booking::with(['event', 'user'])->get();
-        return view('admin.index', compact('bookings'));
-    }
+{
+    $bookings = Booking::with(['event', 'user'])
+        ->orderBy('BookingID', 'desc') 
+        ->get();
+
+    return view('admin.index', compact('bookings'));
+}
+
+    
+
 
     public function accept($id)
 {

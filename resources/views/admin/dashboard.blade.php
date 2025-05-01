@@ -1,5 +1,7 @@
 @extends('layout.adminMaster')
 
+
+
 @section('content')
 <div class="container mx-auto px-6 py-8">
     <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>

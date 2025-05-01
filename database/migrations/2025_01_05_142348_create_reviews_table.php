@@ -19,7 +19,7 @@ class CreateReviewsTable extends Migration
 
             // Foreign key constraints
             $table->foreign('UserID')
-                  ->references('UserID')
+                  ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
             

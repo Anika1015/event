@@ -23,7 +23,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Event Planner</h1>
             <ul class="flex space-x-6">
                 <li><a href="{{ route('admin.dashboard') }}" class="text-gray-800 hover:text-gray-500">Home</a></li>
-                <li><a href="{{ route('admin.payments.index') }}" class="text-gray-800 hover:text-gray-500">Payment Info</a></li>
+                <li><a href="{{ route('transactions.index') }}" class="text-gray-800 hover:text-gray-500">Payment Info</a></li>
                 <li><a href="{{ route('events.manage') }}" class="text-gray-800 hover:text-gray-500">Manage Events</a></li>
                 <li><a href="{{ route('admin.index') }}" class="text-gray-800 hover:text-gray-500">Request</a></li>
     

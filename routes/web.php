@@ -15,6 +15,65 @@ use App\Http\Controllers\EventRequestController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AdminBookingController;
 
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\PDFController;
+
+use App\Http\Controllers\VenueController;
+use App\Http\Controllers\LightingThemeController;
+use App\Http\Controllers\DishPackageController;
+
+use App\Http\Controllers\TransactionController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+
+
+
+
+Auth::routes(['verify' => true]);
+
+Route::get('/events/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
+Route::put('/events/{id}', [EventController::class, 'update'])->name('events.update');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
+
+
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+
+Route::get('/events/manage', [EventController::class, 'manage'])->name('events.manage');
+Route::get('/events/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
+Route::post('/events/{id}', [EventController::class, 'update'])->name('events.update');
+
+Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
+
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create'); 
+Route::post('/events', [EventController::class, 'store'])->name('events.store'); 
+
+Route::get('/stripe', [StripeController::class, 'validate']);
+
+Route::resource('events', EventController::class);
+
+Route::resource('venues', VenueController::class);
+
+Route::resource('dish-packages', DishPackageController::class);
+
+Route::resource('lighting-themes', LightingThemeController::class);
+
+
+Route::get('/stripe/{booking_id}', [StripeController::class, 'index'])->name('stripe.index');
+Route::post('/stripe/charge', [StripeController::class, 'charge'])->name('stripe.charge');
+
+
+Route::get('/payment/error', [StripeController::class, 'paymentError'])->name('payment.error');
+
+
+Route::get('/payment/success/{id}', [StripeController::class, 'paymentSuccess'])->name('payment.success');
+
+use App\Http\Controllers\InvoiceController;
+
+Route::get('/invoice/download/{id}', [PDFController::class, 'download'])->name('invoice.download');
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/book/{event_id?}', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/book/{event_id}', [BookingController::class, 'store'])->name('booking.store');
@@ -22,20 +81,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/bookings/{id}/accept', [AdminBookingController::class, 'accept'])->name('admin.booking.accept');
     Route::post('/admin/bookings/{id}/reject', [AdminBookingController::class, 'reject'])->name('admin.booking.reject');
 
+  
 
 
 });
 
 Route::get('/status', [BookingController::class, 'status'])->name('status');
 
+Route::get('/admin/payments', [StripeController::class, 'index'])->name('admin.payments.index');
+Route::get('/admin/payments/{id}', [StripeController::class, 'show'])->name('admin.payments.show');
 
-
-
-
-
-
-
-// Routes in web.php
 
 Route::get('/events/request', [EventRequestController::class, 'create'])->name('events.request.create');
 Route::post('/events/request', [EventRequestController::class, 'store'])->name('events.request.store');
@@ -46,15 +101,10 @@ Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('a
 Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
 
 
-
 Route::get('/messages', [ContactController::class, 'showUserMessages'])->name('messages')->middleware('auth');
 
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('/payments', [PaymentController::class, 'index'])->name('admin.payments.index');
-    Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('admin.payments.show');
-});
 
 
 Auth::routes();
@@ -69,46 +119,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
-
-
-
-Route::get('/events/manage', [EventController::class, 'manage'])
-    ->name('events.manage')
-    ->middleware(['auth', 'admin']);
-
-Route::post('/events/store', [EventController::class, 'store'])
-    ->name('events.store')
-    ->middleware(['auth', 'admin']);
-
-Route::post('/events/update/{id}', [EventController::class, 'update'])
-    ->name('events.update')
-    ->middleware(['auth', 'admin']);
-
-    
-Route::post('/events/delete/{id}', [EventController::class, 'destroy'])
-    ->name('events.delete');
-    
-
-
-
-
-
-// Home Route - Show all events
+// Show all events
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
 
-// Show event details
+
+
+
+
 Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
-// Show payment form
-Route::get('/events/{id}/payment', [PaymentController::class, 'showPaymentForm'])->name('payment.form');
-
-// Process payment
-Route::post('/events/{id}/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
-
-// Payment success page
-Route::get('/payment/success', function () {
-    return view('payment.success');
-})->name('payment.success');
 
 
 Route::get('/', function () {
@@ -128,6 +148,10 @@ Route::get('/home', function () {
    return view('home');
 });
 
+Route::get('/dashboard', function () {
+   return view('dashboard'); 
+})->middleware(['auth']);
+
 
 Route::middleware([
     'auth:sanctum',
@@ -140,5 +164,6 @@ Route::middleware([
 });
 
 Auth::routes();
+
 
 

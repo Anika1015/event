@@ -12,8 +12,8 @@ class Booking extends Model
     protected $primaryKey = 'BookingID';
 
     protected $fillable = [
-        'UserID', 'EventID', 'event_name', 'event_date', 'location',
-        'time_slot', 'number_of_guests','description', 'status',
+        'UserID', 'EventID', 'event_name', 'event_date',
+        'time_slot', 'number_of_guests','description', 'status', 'venue_id', 'dish_package_id', 'lighting_theme_id', 'amount', 
         'admin_decision', 'rejection_reason', 'amount', 'payment_deadline'
     ];
     
@@ -25,6 +25,31 @@ class Booking extends Model
     public function event() {
         return $this->belongsTo(Event::class, 'EventID', 'id'); 
     }
+
+    
+
+     // Define the relationship with the Venue model
+     public function venue()
+     {
+         return $this->belongsTo(Venue::class, 'venue_id');
+     }
+ 
+     // Define the relationship with the DishPackage model
+     public function dishPackage()
+     {
+         return $this->belongsTo(DishPackage::class, 'dish_package_id');
+     }
+ 
+     // Define the relationship with the LightingTheme model
+     public function lightingTheme()
+     {
+         return $this->belongsTo(LightingTheme::class, 'lighting_theme_id');
+     }
+     public function transactions()
+     {
+         return $this->hasMany(Transaction::class, 'booking_id', 'BookingID');
+     }
+
     
     
 }

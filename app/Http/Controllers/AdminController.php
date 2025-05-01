@@ -16,16 +16,16 @@ class AdminController extends Controller
 {
     public function usercheck()
     {
-        // Fetch total users
+        // total users
         $totalUsers = User::where('is_admin', 'user')->count();
 
         // Fetch total contact messages
         $totalContacts = Contact::count();
 
-        // Fetch pending requests
+        // pending requests
         $pendingRequests = Contact::where('status', 'pending')->count();
 
-        // Fetch latest 5 messages
+        // latest 5 messages
         $contacts = Contact::latest()->take(5)->get();
 
         $totalIncome = Payment::sum('amount');
@@ -66,4 +66,14 @@ class AdminController extends Controller
 
         return redirect()->route('admin.requests')->with('success', 'Event request rejected.');
     }
+
+    public function manage()
+{
+    $venues = Venue::all();
+    $dishPackages = DishPackage::all();
+    $lightingThemes = LightingTheme::all();
+
+    return view('events.manage', compact('venues', 'dishPackages', 'lightingThemes'));
+}
+
 }

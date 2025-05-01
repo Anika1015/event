@@ -9,7 +9,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: linear-gradient(to right,rgb(26, 32, 32),rgb(72, 115, 115));
             color: white;
             text-align: center;
         }
